@@ -1,0 +1,25 @@
+version: "3.0"
+services:
+  sxhgb:
+    image: selenium_python:v4
+    volumes:
+      - ./SXHGB:/SXHGB  # 这里把刚刚的代码映射到这个目录
+    command: python3 -u  /SXHGB/main_docker.py   # 定义启动容器执行的命令
+    restart: on-failure
+    environment:
+      - SXHGB_USRNAME=u0139522         # username
+      - SXHGB_PWD=u0139522             # password
+      - SXHGB_NAME=郎丽英               # name 
+
+    depends_on:
+      - chrome 
+  chrome:
+    image: selenium/standalone-chrome:108.0 
+    volumes:
+      - ./config.toml:/opt/selenium/config.toml
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+    restart: on-failure
+    shm_size: 2g
+

@@ -9,7 +9,7 @@ services:
     environment:
       - SXHGB_USRNAME=********         # username
       - SXHGB_PWD=********             # password
-      - SXHGB_NAME=HEL                 # name 随便填
+      - SXHGB_NAME=XXX                 # name 随便填
       - SXHGB_GOAL=100                 # 年度目标学时 
 
     depends_on:

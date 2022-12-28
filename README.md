@@ -10,7 +10,9 @@ docker 镜像
 
 1. selenium_python:v4 自己 build
 
-2. selenium/standalone-chrome:108.0 从 dockerhub 拉取
+2. selenium/standalone-chrome:108.0 从 dockerhub 拉取   (arm64 使用
+ seleniarm/standalone-chromium:4.7.2
+)
 
   
 
@@ -24,7 +26,7 @@ docker 镜像
 
 2. 下载本项目
 
-```git clone https://github.com/tustxsfh/sxhgb_docker.git```
+   ```git clone https://github.com/tustxsfh/sxhgb_docker.git```
 
   
 
@@ -32,7 +34,7 @@ docker 镜像
 
 ```
 
-cd ./sxhgb
+cd ./sxhgb_docker
 
 docker build . -t selenium_python:v4
 
@@ -40,9 +42,7 @@ docker build . -t selenium_python:v4
 
   
 
-4. 从 docker-compose.yml 运行程序
-
-- 修改 docker-compose.yml 文件中环境变量
+4. 修改 docker-compose.yml 文件中环境变量
 
 ```yaml
 
@@ -54,11 +54,11 @@ environment:
 
    - SXHGB_NAME=×××× # name
 
-   - SXHGB_GOAL=100 # 年度目标学时
+   - SXHGB_GOAL=100 # 年度目标学时  根据需要改
 
 ```
 
-- 运行
+5. 运行
 
 ```
 
@@ -66,7 +66,7 @@ docker compose up -d
 
 ```
 
-5. api 说明
+## api 说明
 
   
 
@@ -83,7 +83,7 @@ docker compose up -d
 - peixun_random() 专题培训随机学习
 
 
-6. 注意事项
+## 注意事项
 
 - find_peixun()  find_course() 只在需要更新学习内容时使用，取消注释即可
 

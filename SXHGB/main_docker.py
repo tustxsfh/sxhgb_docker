@@ -32,9 +32,12 @@ src = './SXHGB/'           # 在DOCKER中路径要加上SXHGB 因为工作路径
 
 start_time = time.time()
 
+
 ume = os.environ['SXHGB_USRNAME']
 pwd = os.environ['SXHGB_PWD']
 name = os.environ['SXHGB_NAME']
+hour_goal = int(os.environ['SXHGB_GOAL'])     # 年度目标学时
+
 
 
 def login(ume:str, pwd:str, name:str='用户'):  # 登录函数
@@ -84,6 +87,9 @@ def chaxun(name):               # 查询函数
     name = name
     print(name+'登录成功')
     print(shichang)
+    T = re.findall(r'\d+', shichang)[1]
+    T = int(T)
+    return T
     
     
 
@@ -417,6 +423,7 @@ def peixun():
         # sum = len(cou_url_list)
     for pei_url in cou_url_list:
         print('-----------------------------------------------------------------------------------')
+        chaxun(name)
         print(pei_url)
         
         browser.get(pei_url)
@@ -434,7 +441,7 @@ def peixun():
         
         for li in li_list:
             
-            chaxun(name)
+            
             day_counter()
             li_html = str(li)
             # print('--------------------------------------')
@@ -521,6 +528,8 @@ def peixun_random():
 
     for x in range(1, 100):  # 每次随机学习，学习100次
 
+        chaxun(name)
+        
         # 培训页面
         pei_url = (cou_url_list[random.randint(1, sum - 1)])
         # for pei_url in cou_url_list:
@@ -543,7 +552,7 @@ def peixun_random():
         
         for li in li_list:
             
-            chaxun(name)
+            
             day_counter()
 
             li_html = str(li)
@@ -628,32 +637,37 @@ if __name__ == "__main__":
         
         login(ume, pwd, name)
         
-        chaxun(name)
+        T = chaxun(name)
+        
+        if T > hour_goal:
+            
+            print('年度学习任务已完成')
+            time.sleep(20)
+            browser.quit()
+            exit()
+            
+        else:       
 
-        # login_time = time.time()
+            # 获取专题培训url
+            # find_peixun()
 
+            # 获取课程url
+            # find_course()
 
+            # 完成课程学习功能
+            print(name+"课程学习开始")
+            kecheng_random()
+            # keicheng()
+            # print(name+"课程学习结束")
 
-        # 获取专题培训url
-        # find_peixun()
+            # 完成专题培训学习功能
+            print(name+"专题培训开始")
 
-        # 获取课程url
-        # find_course()
-
-        # 完成课程学习功能
-        # print(name+"课程学习开始")
-        # kecheng_random()
-        # keicheng()
-        # print(name+"课程学习结束")
-
-        # 完成专题培训学习功能
-        print(name+"专题培训开始")
-
-        # peixun()               # 顺序学习
-        peixun_random()           # 随机学习
-        # print(name+"专题培训结束")
-        time.sleep(10)
-        print('**************************************************************************************************************************')
+            peixun()               # 顺序学习
+            # peixun_random()           # 随机学习
+            # print(name+"专题培训结束")
+            time.sleep(10)
+            print('**************************************************************************************************************************')
 
     try:
         study()

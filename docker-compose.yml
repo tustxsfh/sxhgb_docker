@@ -3,7 +3,7 @@ services:
   sxhgb:
     image: selenium_python:v4
     volumes:
-      - ./SXHGB:/SXHGB  # 这里把刚刚的代码映射到这个目录
+      - ./SXHGB:/SXHGB                           # 把代码映射到这个目录
     command: python3 -u  /SXHGB/main_docker.py   # 定义启动容器执行的命令
     restart: on-failure
     environment:

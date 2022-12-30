@@ -1,5 +1,6 @@
 # sxhgb_docker 山西好干部在线学习  
 
+## 本项目只用于个人学习，严 禁用于非法用途
   
 
 ## 学习环境
@@ -83,4 +84,4 @@ docker compose up -d
 
 - keicheng() kecheng_random() peixun() peixun_random() 使用一个即可，其余注释掉 
 
-- 默认使用 kecheng_random() 课程按顺序学习
+- 默认使用 kecheng()  peixun()

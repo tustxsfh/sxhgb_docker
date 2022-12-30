@@ -89,7 +89,16 @@ def chaxun(name):               # 查询函数
     print(shichang)
     T = re.findall(r'\d+', shichang)[1]
     T = int(T)
-    return T
+
+    if T > int(hour_goal):
+
+            print('年度学习任务已完成')
+            time.sleep(20)
+            browser.quit()
+            exit()
+
+    else:   
+        return T
     
     
 
@@ -108,9 +117,9 @@ def find_peixun():
 
     for pid in pei_list:
         pid = str(pid)
-        print(pid)
+        # print(pid)
         pid = re.findall(r'id=(.+?)"', pid)
-        print(pid)
+        # print(pid)
         peixun_url = 'https://www.sxgbxx.gov.cn/uc/plan/info?id=' + pid[0]  # 生成培训课题的url
         browser.get(peixun_url)
 
@@ -202,11 +211,11 @@ def keicheng():
 
         # sum = len(cou_url_list)
     for cou_url in cou_url_list:
+
+        chaxun(name)
         
         print('--------------------------------------------------------------------------')
         print(cou_url)
-        
-        chaxun(name)
         
         browser.get(cou_url)
         # print(browser.page_source)
@@ -233,7 +242,7 @@ def keicheng():
                 continue
             id = re.findall(r'kp_\d+', li_html)
             id = ''.join(id)
-            print(id)
+            # print(id)
 
             if '视频播放' in li_html:
                 if '100%' in li_html:
@@ -422,8 +431,10 @@ def peixun():
 
         # sum = len(cou_url_list)
     for pei_url in cou_url_list:
-        print('-----------------------------------------------------------------------------------')
+
         chaxun(name)
+
+        print('-----------------------------------------------------------------------------------')
         print(pei_url)
         
         browser.get(pei_url)
@@ -450,7 +461,7 @@ def peixun():
                 continue
             id = re.findall(r'kp_\d+', li_html)
             id = ''.join(id)
-            print(id)
+            # print(id)
 
             if '视频播放' in li_html:
                 if '100%' in li_html:
@@ -562,7 +573,7 @@ def peixun_random():
                 continue
             id = re.findall(r'kp_\d+', li_html)
             id = ''.join(id)
-            print(id)
+            # print(id)
         
             if '视频播放' in li_html:
                 if '100%' in li_html:
@@ -656,16 +667,16 @@ if __name__ == "__main__":
 
             # 完成课程学习功能
             print(name+"课程学习开始")
-            kecheng_random()
-            # keicheng()
-            # print(name+"课程学习结束")
+            # kecheng_random()
+            keicheng()
+            print(name+"课程学习结束")
 
             # 完成专题培训学习功能
             print(name+"专题培训开始")
 
             peixun()               # 顺序学习
             # peixun_random()           # 随机学习
-            # print(name+"专题培训结束")
+            print(name+"专题培训结束")
             time.sleep(10)
             print('**************************************************************************************************************************')
 
@@ -677,8 +688,8 @@ if __name__ == "__main__":
 
 
 
-browser.quit()
-exit()
+    browser.quit()
+    exit()
 
 
     

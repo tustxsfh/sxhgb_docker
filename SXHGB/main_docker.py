@@ -112,7 +112,6 @@ def find_peixun():
     r = browser.page_source
     pei_obj = BeautifulSoup(r, "lxml")
     pei_list = pei_obj.findAll("div", {"class": "e-m-more"})  # 获取我的专题培训内容
-    src = './'
     f1 = open(src+'peixun_url.txt', 'w')  # 培训课程的url
 
     for pid in pei_list:

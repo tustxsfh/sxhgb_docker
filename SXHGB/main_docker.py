@@ -16,6 +16,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 # from selenium.common.exceptions import TimeoutException
 # from selenium.common.exceptions import NoSuchElementException
 
+time.sleep(20)            # 等待chrome 容器先启动   
 
 options = Options()
 browser = webdriver.Remote(

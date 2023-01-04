@@ -268,7 +268,7 @@ def find_undo_course():
     url_list = find_something(
         url=undo_url, totalpage_xpath=totalpage_xpath, cour_xpath=cour_xpath)[0]
     # print(url_list)
-    with open('undo.txt', 'w+') as f:
+    with open(src+'undo.txt', 'w+') as f:
         for url in url_list:
             f.write(url+'\n')
 

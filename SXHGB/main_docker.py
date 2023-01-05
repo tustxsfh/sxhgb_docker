@@ -260,7 +260,7 @@ def find_course():
 
 def find_undo_course():
     """
-    下载所有未完成课程的url
+    下载所有未完成课程的url  can not work with headless!!!
     """
     undo_url = 'https://www.sxgbxx.gov.cn/uc/course_tzc?status=1'
     totalpage_xpath = '/html/body/div[1]/div[1]/div[4]/section[2]/div/div/article/div[3]/div/span'
@@ -268,7 +268,7 @@ def find_undo_course():
     url_list = find_something(
         url=undo_url, totalpage_xpath=totalpage_xpath, cour_xpath=cour_xpath)[0]
     # print(url_list)
-    with open(src+'undo.txt', 'w+') as f:
+    with open('undo.txt', 'w+') as f:
         for url in url_list:
             f.write(url+'\n')
 
@@ -298,7 +298,6 @@ def day_counter():
 
 
 def xuexi(url):
-
     """
     提供单个学习页面的url，自动开始学习
     """
@@ -317,81 +316,91 @@ def xuexi(url):
     for li in li_list:
 
         day_counter()
+        
+        try:
 
-        li_html = str(li)
-        # print('--------------------------------------')
-        # print(li_html)
-        if 'kpoint_list' not in li_html:
+            li_html = str(li)
+            # print('--------------------------------------')
+            # print(li_html)
+            if 'kpoint_list' not in li_html:
+                continue
+            id = re.findall(r'kp_\d+', li_html)
+            id = ''.join(id)
+            # print(id)
+
+            if '视频播放' in li_html:
+                if '100%' in li_html:
+                    continue
+                title = li.get_text()  # 找到课程标题
+                print(title)
+                shichang = re.findall(r'\d+分\d+秒', li_html)
+                shichang = re.findall(r'\d+', str(shichang))
+                shichang = int(shichang[0]) * 60 + int(shichang[1])
+                percent = re.findall(r'\d+\%', li_html)
+                percent = re.findall(r'\d+', str(percent))
+                percent = int(percent[0])
+                # print('看视频')
+                # print("本视频长%s秒" % shichang)
+                # print("已学习%d%%" % percent)
+                t = shichang * (100 - percent) * 0.01
+                browser.find_element(By.ID, id).click()
+                time.sleep(3)
+                action = ActionChains(browser)
+                # title = browser.find_element_by_xpath('//*[@id="N-course-box"]/article/div/div[2]/section/h3/span')  # 鼠标移动到标题
+                # action.move_to_element(title).click().perform()
+                time.sleep(20)
+                action.send_keys(Keys.SPACE).perform()  # 单击空格
+                time.sleep(t + 40)
+                print(li.get_text() + "学习完毕")
+                print('\n')
+                print('\n')
+                browser.refresh()
+
+            elif '音频播放' in li_html:
+                if '100%' in li_html:
+                    continue
+                title = li.get_text()  # 找到课程标题
+                print(title)
+                shichang = re.findall(r'\d+分\d+秒', li_html)
+                shichang = re.findall(r'\d+', str(shichang))
+                shichang = int(shichang[0]) * 60 + int(shichang[1])
+                percent = re.findall(r'\d+\%', li_html)
+                percent = re.findall(r'\d+', str(percent))
+                percent = int(percent[0])
+                # print('听音频')
+                # print("本音频长%s秒" % shichang)
+                # print("已学习%d%%" % percent)
+                t = shichang * (100 - percent) * 0.01
+                browser.find_element(By.ID, 'yp_play').click()
+                time.sleep(t + 20)
+                print(li.get_text() + "学习完毕")
+                print('\n')
+                print('\n')
+                browser.refresh()
+
+            elif '随堂小测验' in li_html:
+                continue
+
+            else:
+                if '100%' in li_html:
+                    continue
+                print('读文字')
+                browser.find_element(By.ID, id).click()
+                time.sleep(5)
+                print(li.get_text() + "学习完毕")
+                print('\n')
+                print('\n')
+                browser.refresh()
+        except TimeoutException:
+            print('加载时间异常')
             continue
-        id = re.findall(r'kp_\d+', li_html)
-        id = ''.join(id)
-        # print(id)
-
-        if '视频播放' in li_html:
-            if '100%' in li_html:
-                continue
-            title = li.get_text()  # 找到课程标题
-            print(title)
-            shichang = re.findall(r'\d+分\d+秒', li_html)
-            shichang = re.findall(r'\d+', str(shichang))
-            shichang = int(shichang[0]) * 60 + int(shichang[1])
-            percent = re.findall(r'\d+\%', li_html)
-            percent = re.findall(r'\d+', str(percent))
-            percent = int(percent[0])
-            # print('看视频')
-            # print("本视频长%s秒" % shichang)
-            # print("已学习%d%%" % percent)
-            t = shichang * (100 - percent) * 0.01
-            browser.find_element(By.ID, id).click()
-            time.sleep(3)
-            action = ActionChains(browser)
-            # title = browser.find_element_by_xpath('//*[@id="N-course-box"]/article/div/div[2]/section/h3/span')  # 鼠标移动到标题
-            # action.move_to_element(title).click().perform()
-            time.sleep(20)
-            action.send_keys(Keys.SPACE).perform()  # 单击空格
-            time.sleep(t + 40)
-            print(li.get_text() + "学习完毕")
-            print('\n')
-            print('\n')
-            browser.refresh()
-
-        elif '音频播放' in li_html:
-            if '100%' in li_html:
-                continue
-            title = li.get_text()  # 找到课程标题
-            print(title)
-            shichang = re.findall(r'\d+分\d+秒', li_html)
-            shichang = re.findall(r'\d+', str(shichang))
-            shichang = int(shichang[0]) * 60 + int(shichang[1])
-            percent = re.findall(r'\d+\%', li_html)
-            percent = re.findall(r'\d+', str(percent))
-            percent = int(percent[0])
-            # print('听音频')
-            # print("本音频长%s秒" % shichang)
-            # print("已学习%d%%" % percent)
-            t = shichang * (100 - percent) * 0.01
-            browser.find_element(By.ID, 'yp_play').click()
-            time.sleep(t + 20)
-            print(li.get_text() + "学习完毕")
-            print('\n')
-            print('\n')
-            browser.refresh()
-
-        elif '随堂小测验' in li_html:
+        except NoSuchElementException:
+            print('元素异常')
             continue
-
-        else:
-            if '100%' in li_html:
-                continue
-            print('读文字')
-            browser.find_element(By.ID, id).click()
-            time.sleep(5)
-            print(li.get_text() + "学习完毕")
-            print('\n')
-            print('\n')
-            browser.refresh()
-
-
+        except WebDriverException:
+            print('webdriver异常')
+            continue
+        
 def shunxu_xuexi(url_file: str):
     """
     按顺序进行课程学习
@@ -404,10 +413,18 @@ def shunxu_xuexi(url_file: str):
 
         print('--------------------------------------------------------------------------')
         print(cou_url)
-
-        chaxun(name)
-        xuexi(cou_url)
-
+        try:
+            chaxun(name)
+            xuexi(cou_url)
+        except TimeoutException:
+            print('加载时间异常')
+            continue
+        except NoSuchElementException:
+            print('元素异常')
+            continue
+        except WebDriverException:
+            print('webdriver异常')
+            continue
 
 def random_xuexi(url_file: str):
     """
@@ -419,15 +436,22 @@ def random_xuexi(url_file: str):
         sum = len(cou_url_list)
 
     for x in range(1, sum):  # 每次随机学习
-
-        chaxun(name)
-
         # 课程学习页面
         cou_url = (cou_url_list[random.randint(1, sum - 1)])
         print('--------------------------------------------------------------------------')
         print(cou_url)
-        xuexi(cou_url)
-
+        try:
+            chaxun(name)
+            xuexi(cou_url)
+        except TimeoutException:
+            print('加载时间异常')
+            continue
+        except NoSuchElementException:
+            print('元素异常')
+            continue
+        except WebDriverException:
+            print('webdriver异常')
+            continue
 
 def study():
     """
@@ -438,41 +462,40 @@ def study():
 
     chaxun(name)               # 查询时长
 
-    sign_up()              # 专题培训报名
+    # sign_up()              # 专题培训报名
 
-    find_peixun()          # 获取专题培训url
+    # find_peixun()          # 获取专题培训url
 
-    find_course()          # 获取课程url
+    # find_course()          # 获取课程url
 
-    find_undo_course()     # 获取未完成课程的url
+    # find_undo_course()     # 获取未完成课程的url Can't work in headless chrome
 
     # shunxu_xuexi('undo.txt')      # 按顺序学习未完成的课程
 
     # 完成课程学习功能
     print(name+"课程学习开始")
     shunxu_xuexi('cou_url.txt')
-    random_xuexi('cou_url.txt')
+    # random_xuexi('cou_url.txt')
     print(name+"课程学习结束")
 
     # 完成专题培训学习功能
     print(name+"专题培训开始")
 
     shunxu_xuexi('peixun_url.txt')               # 顺序学习
-    random_xuexi('peixun_url.txt')           # 随机学习
-    print(name+"专题培训结束")
+    # random_xuexi('peixun_url.txt')           # 随机学习
+    # print(name+"专题培训结束")
     time.sleep(10)
     print('**************************************************************************************************************************')
 
 
 if __name__ == "__main__":
 
-    study()
-
-    # try:
-    #     study()
-    #     time.sleep(300)
-    # except:
-    #     print('something bad happen')
-    #     browser.quit()
-    #     exit()
+    
+    try:
+        study()
+        time.sleep(3)
+    except:
+        print('something bad happen')
+        browser.quit()
+        exit()
     

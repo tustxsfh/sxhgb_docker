@@ -495,7 +495,6 @@ if __name__ == "__main__":
         study()
         time.sleep(3)
     except:
-        print('something bad happen')
-        browser.quit()
-        exit()
-    
+        print('发生不明异常，重新学习‘）
+        study()
+

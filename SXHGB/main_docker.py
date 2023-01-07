@@ -13,8 +13,8 @@ import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-# from selenium.common.exceptions import TimeoutException
-# from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import NoSuchElementException
 
 time.sleep(20)            # 等待chrome 容器先启动   
 
@@ -495,6 +495,6 @@ if __name__ == "__main__":
         study()
         time.sleep(3)
     except:
-        print('发生不明异常，重新学习‘）
+        print('发生不明异常，重新学习')
         study()
 

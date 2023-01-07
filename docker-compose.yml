@@ -7,8 +7,8 @@ services:
     command: python3 -u  /SXHGB/main_docker.py   # 定义启动容器执行的命令
     restart: on-failure
     environment:
-      - SXHGB_USRNAME=********         # username
-      - SXHGB_PWD=********             # password
+      - SXHGB_USRNAME=u0283323         # username
+      - SXHGB_PWD=u0283323             # password
       - SXHGB_NAME=XXX                 # name 随便填
       - SXHGB_GOAL=100                 # 年度目标学时 
 

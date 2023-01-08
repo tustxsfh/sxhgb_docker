@@ -490,11 +490,4 @@ def study():
 
 if __name__ == "__main__":
 
-    
-    try:
-        study()
-        time.sleep(3)
-    except:
-        print('发生不明异常，重新学习')
-        study()
-
+    study()
